@@ -1,9 +1,9 @@
-#server:
-#  context-path: /dy
-
-spring:
-  profiles:
-    active: dev
-  output:
-    ansi:
-      enabled: detect
+##server:
+##  context-path: /dy
+#
+#spring:
+#  profiles:
+#    active: dev
+#  output:
+#    ansi:
+#      enabled: detect

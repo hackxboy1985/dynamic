@@ -25,22 +25,23 @@ public class TimeFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         log.info("filter start");
 
         String as = request.getParameter("as");
-        String ds = request.getParameter("ds");
-        log.info("as: {} {}", as, ds);
+//        String ds = request.getParameter("ds");
+//        log.info("as: {} {}", as, ds);
+        log.info("[MsDynamic][TimeFilter] as: {}", as);
         if (as == null) {
             throw new InvalidParameterException("as不能为空");
         } else {
 
             RoutingDataSourceContext.setDataSourceProductKey(as);
-            RoutingDataSourceContext.setThreadLocalDataSourceKey(ds);
+//            RoutingDataSourceContext.setThreadLocalDataSourceKey(ds);
             filterChain.doFilter(request, response);
             RoutingDataSourceContext.clearThreadLocalDataSourceKey();
         }
-        log.info("filter end, time=" + (System.currentTimeMillis() - start));
+//        log.info("filter end, time=" + (System.currentTimeMillis() - start));
     }
 
     @Override

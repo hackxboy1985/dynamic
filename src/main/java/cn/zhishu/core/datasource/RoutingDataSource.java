@@ -32,7 +32,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
     private String main_password;
 
     //账套的缺省数据源名
-    @Value("${spring.datasource.suit-default-ds-name:slaveDataSourceWrite}")
+    @Value("${spring.datasource.suit-default-ds-name:slaveDataSourceRead}")
     private String suit_default_ds_name;
 
     private static Map<Object, Object> dataSources = new HashMap<>();

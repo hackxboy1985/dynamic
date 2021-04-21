@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.zhishu.core.SuitDataSourceConfiguration
+spring.autoconfigure.excludeName=DruidDataSourceAutoConfigure

@@ -1,18 +1,18 @@
-server:
-  port: 8082
-spring:
-  datasource:
-    name: main
-    url: jdbc:mysql://127.0.0.1:3306/fan_main?useUnicode=true&allowMultiQueries=true&useSSL=false
-    username: root
-    password:
-    type: cn.zhishu.core.datasource.RoutingDataSource
-    driver-class-name: com.mysql.jdbc.Driver
-    suit-default-ds-name: slaveDataSourceRead
-# Mybatis配置
-mybatis:
-  type-aliases-package: cn.zhishu.core.entity
-  mapper-locations: classpath:mapper/**/*.xml
-#  configLocation: classpath:mybatis.xml
-  configuration:
-    map-underscore-to-camel-case: true #对象驼峰命名和数据库下横线的转换
+#server:
+#  port: 8082
+#spring:
+#  datasource:
+#    name: main
+#    url: jdbc:mysql://127.0.0.1:3306/fan_main?useUnicode=true&allowMultiQueries=true&useSSL=false
+#    username: root
+#    password:
+#    type: cn.zhishu.core.datasource.RoutingDataSource
+#    driver-class-name: com.mysql.jdbc.Driver
+#    suit-default-ds-name: slaveDataSourceRead
+## Mybatis配置
+#mybatis:
+#  type-aliases-package: cn.zhishu.core.entity
+#  mapper-locations: classpath:mapper/**/*.xml
+##  configLocation: classpath:mybatis.xml
+#  configuration:
+#    map-underscore-to-camel-case: true #对象驼峰命名和数据库下横线的转换
