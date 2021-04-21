@@ -50,9 +50,9 @@ CREATE TABLE `f_user` (
 
 #fan_main导入默认数据
 INSERT INTO `fan_datasource` (`name`, `url`, `username`, `password`) VALUES
-('fan_001', 'jdbc:mysql://127.0.0.1:3306/fan_001?useUnicode=true&allowMultiQueries=true&useSSL=false', 'root', 'fxl123'),
-('fan_002', 'jdbc:mysql://127.0.0.1:3306/fan_002?useUnicode=true&allowMultiQueries=true&useSSL=false', 'root', 'fxl123'),
-('fan_003', 'jdbc:mysql://127.0.0.1:3306/fan_003?useUnicode=true&allowMultiQueries=true&useSSL=false', 'root', 'fxl123');
+('fan_001', 'jdbc:mysql://127.0.0.1:3306/fan_001?useUnicode=true&allowMultiQueries=true&useSSL=false', 'root', ''),
+('fan_002', 'jdbc:mysql://127.0.0.1:3306/fan_002?useUnicode=true&allowMultiQueries=true&useSSL=false', 'root', ''),
+('fan_003', 'jdbc:mysql://127.0.0.1:3306/fan_003?useUnicode=true&allowMultiQueries=true&useSSL=false', 'root', '');
 
 INSERT INTO `f_user` (`username`) VALUES ('main_01'), ('main_02'), ('main_03'), ('main_04');
 
@@ -64,3 +64,5 @@ INSERT INTO `f_user` (`username`) VALUES ('002_01'), ('002_02'), ('002_03'), ('0
 
 #fan_003导入默认数据
 INSERT INTO `f_user` (`username`) VALUES ('003_01'), ('003_02'), ('003_03'), ('003_04');
+
+
