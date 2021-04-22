@@ -2,6 +2,7 @@ package cn.zhishu.core.aspect;
 
 import cn.zhishu.core.common.annotation.DataSource;
 import cn.zhishu.core.datasource.RoutingDataSourceContext;
+import cn.zhishu.core.logger.MsLogger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,7 +24,7 @@ import java.lang.reflect.Method;
 @Component
 public class RoutingAspect {
 
-    private static Logger LOG = LoggerFactory.getLogger(RoutingAspect.class);
+    private static final MsLogger LOG = MsLogger.getLogger(RoutingAspect.class);
 
     @Pointcut("@annotation(cn.zhishu.core.common.annotation.DataSource)")
     public void pointCut() {
@@ -38,12 +39,11 @@ public class RoutingAspect {
 
         String dataSource = ds.value();
         if (StringUtils.isEmpty(dataSource)) {
-//            DynamicDataSource.setDataSource(DataSourceEnum.MASTER.getName());
-//            RoutingDataSourceContext.setThreadLocalDataSourceKey(RoutingDataSourceContext.SUID_DS_DEFAULT_KEY);
-            LOG.debug("set datasource is null, use datasource : {}", dataSource);
+            RoutingDataSourceContext.setThreadLocalDataSourceDefaultKey();
+            LOG.info("[MsDynamic][RoutingAspect]annotation set datasource is null, use datasource : default ");
         } else {
             RoutingDataSourceContext.setThreadLocalDataSourceKey(dataSource);
-            LOG.debug("use datasource : {}", dataSource);
+            LOG.info("[MsDynamic][RoutingAspect]annotation use datasource : {}", dataSource);
         }
 
         try {

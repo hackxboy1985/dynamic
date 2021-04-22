@@ -17,6 +17,7 @@ public class RoutingDataSourceContext  {
     //库 key
     static final ThreadLocal<String> threadLocalDataSourceKey = new ThreadLocal<>();
 
+
     //产品 key
     static final ThreadLocal<String> threadLocalProductKey = new ThreadLocal<>();
 
@@ -33,15 +34,14 @@ public class RoutingDataSourceContext  {
      * @return
      */
     public static String getDataSourceRoutingKey() {
+        //TODO:当未使用注解进行设置数据源时，默认使用主库
         String key = threadLocalDataSourceKey.get();
-        String product = threadLocalProductKey.get();
         if (key == null){
-            if (product == null)
-                key = MAIN_KEY;
-            else
-                key = SUID_DS_DEFAULT_KEY;
+            return MAIN_KEY + SUIT_SEPERATE + MAIN_KEY;
         }
-        product = product == null ? MAIN_KEY : product;
+        //TODO:当使用了注解进行设置数据源时，产品key才生效
+        String product = threadLocalProductKey.get();
+        //product = product == null ? MAIN_KEY : product;
         return product + SUIT_SEPERATE + key;
     }
 
@@ -51,6 +51,10 @@ public class RoutingDataSourceContext  {
      */
     public static void setThreadLocalDataSourceKey(String key) {
         threadLocalDataSourceKey.set(key);
+    }
+
+    public static void setThreadLocalDataSourceDefaultKey() {
+        threadLocalDataSourceKey.set(SUID_DS_DEFAULT_KEY);
     }
 
     /**

@@ -1,6 +1,8 @@
 package cn.zhishu.core.datasource;
 
+import cn.zhishu.core.Utils;
 import cn.zhishu.core.entity.SuitDataSource;
+import cn.zhishu.core.logger.MsLogger;
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +20,9 @@ import java.util.Map;
  * @author: fanxl
  * @date: 2018/9/26 0026 11:27
  */
-@Slf4j
 public class RoutingDataSource extends AbstractRoutingDataSource {
+
+    private static final MsLogger log = MsLogger.getLogger(RoutingDataSource.class);
 
     private JdbcTemplate jdbcTemplate;
 
@@ -44,7 +47,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
     public void RoutingDataSourceInit() {
         log.info("[MsDynamic][RoutingDataSource]初始化主数据源");
         if (StringUtils.isEmpty(main_url) || StringUtils.isEmpty(main_username)){
-            throw new RuntimeException("spring.datasource.url or spring.datasource.username is null");
+            throw new RuntimeException("[MsDynamic]spring.datasource.url or spring.datasource.username is null");
         }
         createAndSaveDataSource(RoutingDataSourceContext.getMainKey());
 
@@ -64,9 +67,10 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
     protected Object determineCurrentLookupKey() {
         String currentAccountSuit = RoutingDataSourceContext.getDataSourceRoutingKey();
         if (StringUtils.isEmpty(currentAccountSuit)) {
-            throw new RuntimeException("CurrentSuit["+ currentAccountSuit +"] error!!!");
+            throw new RuntimeException("[MsDynamic]CurrentSuit["+ currentAccountSuit +"] error!!!");
         }
         log.info("[MsDynamic][RoutingDataSource] 当前操作账套:{}", currentAccountSuit);
+        Utils.traceStack();
         if (!dataSources.containsKey(currentAccountSuit)){
            log.info("[MsDynamic][RoutingDataSource] {}数据源不存在, 创建对应的数据源", currentAccountSuit);
             createAndSaveDataSource(currentAccountSuit);
