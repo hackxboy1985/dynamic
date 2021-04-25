@@ -49,7 +49,7 @@ public class ProductFilter implements Filter {
             RoutingDataSourceContext.setDataSourceProductKey(as);
             //RoutingDataSourceContext.setThreadLocalDataSourceKey(ds);
             filterChain.doFilter(request, response);
-            RoutingDataSourceContext.clearThreadLocalDataSourceKey();
+            RoutingDataSourceContext.clearThreadLocalAllKey();
         }
         //log.info("filter end, time=" + (System.currentTimeMillis() - start));
     }

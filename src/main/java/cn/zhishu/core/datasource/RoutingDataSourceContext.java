@@ -1,11 +1,15 @@
 package cn.zhishu.core.datasource;
 
+import cn.zhishu.core.logger.MsLogger;
+
 /**
  * @description
  * @author: born
  * @date: 2021/4/20 12:10
  */
 public class RoutingDataSourceContext  {
+
+    private static final MsLogger log = MsLogger.getLogger(RoutingDataSourceContext.class);
 
     //主数据源key
     public final static String MAIN_KEY = "main";
@@ -50,6 +54,7 @@ public class RoutingDataSourceContext  {
      * @param key
      */
     public static void setThreadLocalDataSourceKey(String key) {
+        log.info("threadlocal db set:{}",key);
         threadLocalDataSourceKey.set(key);
     }
 
@@ -61,6 +66,16 @@ public class RoutingDataSourceContext  {
      * 清除数据库的key
      */
     public static void clearThreadLocalDataSourceKey() {
+        log.info("清除 ds threadlocal");
+        threadLocalDataSourceKey.remove();
+//        threadLocalProductKey.remove();
+    }
+
+    /**
+     * 清除数据库的key
+     */
+    public static void clearThreadLocalAllKey() {
+        log.info("清除 all threadlocal");
         threadLocalDataSourceKey.remove();
         threadLocalProductKey.remove();
     }
@@ -80,6 +95,7 @@ public class RoutingDataSourceContext  {
      * @param key
      */
     public static void setDataSourceProductKey(String key) {
+        log.info("threadlocal product set:{}",key);
         threadLocalProductKey.set(key);
     }
 
