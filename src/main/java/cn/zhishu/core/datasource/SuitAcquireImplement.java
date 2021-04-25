@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.util.StringUtils;
 
 import java.security.InvalidParameterException;
@@ -49,11 +50,20 @@ public class SuitAcquireImplement implements SuitAcquireInterface{
 
     @Override
     public List<SuitDataSource> getSuitProducts() {
-        String sql = "select name from suit_datasource group by name ";
-        RowMapper<SuitDataSource> rowMapper = new BeanPropertyRowMapper<>(SuitDataSource.class);
+        String sql = "select name,url from suit_datasource group by name ";
         List<SuitDataSource> suitDataSourceList = null;
         try {
-            suitDataSourceList = jdbcTemplate.query(sql, rowMapper);
+            suitDataSourceList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(SuitDataSource.class));
+            for (SuitDataSource sds : suitDataSourceList){
+                String url = sds.getUrl();
+                if (url!=null && url.contains("?")) {
+                    String[] split = url.split("\\?");
+                    String prefix = split[0];
+                    int lastIndexOf = prefix.lastIndexOf("/");
+                    sds.setDb(prefix.substring(lastIndexOf+1,prefix.length()));
+                }
+            }
+            return suitDataSourceList;
         }catch (EmptyResultDataAccessException e){
         }
         return null;

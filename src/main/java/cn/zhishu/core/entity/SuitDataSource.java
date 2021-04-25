@@ -18,6 +18,8 @@ public class SuitDataSource {
 
     private String dbindex;
 
+    private String db;
+
     private String url;
 
     private String username;
