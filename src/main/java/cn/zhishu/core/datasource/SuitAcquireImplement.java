@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.util.StringUtils;
 
 import java.security.InvalidParameterException;
+import java.util.List;
 
 
 public class SuitAcquireImplement implements SuitAcquireInterface{
@@ -25,7 +26,7 @@ public class SuitAcquireImplement implements SuitAcquireInterface{
     }
 
     @Override
-    public SuitDataSource getFanDataSource(String suitname) {
+    public SuitDataSource getSuitDataSource(String suitname) {
         if(StringUtils.isEmpty(suitname) || !suitname.contains(RoutingDataSourceContext.SUIT_SEPERATE))
             throw new InvalidParameterException("账套不存在-"+suitname);
         String[] split = suitname.split(RoutingDataSourceContext.SUIT_SEPERATE);
@@ -44,5 +45,17 @@ public class SuitAcquireImplement implements SuitAcquireInterface{
         }
 
         return suitDataSource;
+    }
+
+    @Override
+    public List<SuitDataSource> getSuitProducts() {
+        String sql = "select name from suit_datasource group by name ";
+        RowMapper<SuitDataSource> rowMapper = new BeanPropertyRowMapper<>(SuitDataSource.class);
+        List<SuitDataSource> suitDataSourceList = null;
+        try {
+            suitDataSourceList = jdbcTemplate.query(sql, rowMapper);
+        }catch (EmptyResultDataAccessException e){
+        }
+        return null;
     }
 }

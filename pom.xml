@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mints</groupId>
-    <artifactId>dynamic</artifactId>
+    <artifactId>ms-dynamic</artifactId>
     <version>0.0.1-RELEASE</version>
-    <name>dynamic</name>
+    <name>ms-dynamic</name>
     <description>Dynamic datasource for Spring Boot</description>
 
     <parent>
@@ -79,6 +79,7 @@
 
         </plugins>
     </build>
+
     <distributionManagement>
         <repository>
             <id>nexus</id>

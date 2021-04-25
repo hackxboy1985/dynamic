@@ -4,7 +4,6 @@ import cn.zhishu.core.Utils;
 import cn.zhishu.core.entity.SuitDataSource;
 import cn.zhishu.core.logger.MsLogger;
 import com.alibaba.druid.pool.DruidDataSource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -118,7 +117,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
      * @return
      */
     private SuitDataSource getFanDataSource(String suitname) {
-        return suitAcquireInterface.getFanDataSource(suitname);
+        return suitAcquireInterface.getSuitDataSource(suitname);
 
 //        String sql = "select name, url, username, password from fan_datasource where name = ?";
 //        RowMapper<SuitDataSource> rowMapper = new BeanPropertyRowMapper<>(SuitDataSource.class);
