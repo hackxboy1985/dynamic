@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.security.InvalidParameterException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +64,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 
 
     @Override
-    protected Object determineCurrentLookupKey() {
+    protected Object determineCurrentLookupKey(){
         String currentAccountSuit = RoutingDataSourceContext.getDataSourceRoutingKey();
         if (StringUtils.isEmpty(currentAccountSuit)) {
             throw new RuntimeException("[MsDynamic]CurrentSuit["+ currentAccountSuit +"] error!!!");
@@ -82,10 +83,21 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 
     private synchronized void createAndSaveDataSource(String currentAccountSuit) {
         DruidDataSource dataSource = createDataSource(currentAccountSuit);
+        checkDs(dataSource);
         dataSources.put(currentAccountSuit, dataSource);
         super.setTargetDataSources(dataSources);
         afterPropertiesSet();
         log.info("[MsDynamic][RoutingDataSource] {}数据源创建成功", currentAccountSuit);
+    }
+
+    private void checkDs(DruidDataSource dataSource){
+        try{
+            dataSource.init();
+        }catch (SQLException e){
+//            throw e;
+            log.error(e.getMessage(),e);
+            throw new RuntimeException("数据库连接异常");
+        }
     }
 
     /**
@@ -93,7 +105,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
      * @param currentAccountSuit
      * @return
      */
-    private DruidDataSource createDataSource(String currentAccountSuit) {
+    DruidDataSource createDataSource(String currentAccountSuit) {
         SuitDataSource suitDataSource;
         if (currentAccountSuit.equalsIgnoreCase(RoutingDataSourceContext.getMainKey())) {
             suitDataSource = new SuitDataSource();
@@ -152,6 +164,9 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
         // 从池中取得链接时做健康检查，该做法十分保守
         dataSource.setTestOnBorrow(false);
         dataSource.setTestOnReturn(false);
+
+        dataSource.setConnectionErrorRetryAttempts(1); //重试次数置为0
+        dataSource.setBreakAfterAcquireFailure(true); // 这个配置可以跳出循环
 //        StatFilter statFilter = new StatFilter();
 //        // 运行ilde链接测试线程，剔除不可用的链接
 //        dataSource.setMaxWait(-1);
