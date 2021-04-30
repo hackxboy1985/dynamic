@@ -2,6 +2,7 @@ package cn.zhishu.core.datasource;
 
 import cn.zhishu.core.entity.SuitDataSource;
 import cn.zhishu.core.logger.MsLogger;
+import cn.zhishu.core.utils.EncryptAESUtil;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -38,6 +39,7 @@ public class SuitAcquireImplement implements SuitAcquireInterface{
         SuitDataSource suitDataSource = null;
         try {
             suitDataSource = jdbcTemplate.queryForObject(sql, rowMapper, product, dsindex);
+            suitDataSource.setPassword(EncryptAESUtil.detryptFailReturnSrc(suitDataSource.getPassword()));
         }catch (EmptyResultDataAccessException e){
         }
         if (suitDataSource == null){

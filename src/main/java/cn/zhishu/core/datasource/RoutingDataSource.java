@@ -1,11 +1,11 @@
 package cn.zhishu.core.datasource;
 
-import cn.zhishu.core.Utils;
+import cn.zhishu.core.utils.Utils;
 import cn.zhishu.core.entity.SuitDataSource;
 import cn.zhishu.core.logger.MsLogger;
+import cn.zhishu.core.utils.EncryptAESUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.util.StringUtils;
 
@@ -23,9 +23,6 @@ import java.util.Map;
 public class RoutingDataSource extends AbstractRoutingDataSource {
 
     private static final MsLogger log = MsLogger.getLogger(RoutingDataSource.class);
-
-    private JdbcTemplate jdbcTemplate;
-
 
     @Value("${spring.datasource.url}")
     private String main_url;
@@ -45,6 +42,9 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 
     @PostConstruct
     public void RoutingDataSourceInit() {
+
+        EncryptAESUtil.init("su","mints@0419");
+
         log.info("[MsDynamic][RoutingDataSource]初始化主数据源");
         if (StringUtils.isEmpty(main_url) || StringUtils.isEmpty(main_username)){
             throw new RuntimeException("[MsDynamic]spring.datasource.url or spring.datasource.username is null");
@@ -115,7 +115,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
             suitDataSource.setUsername(main_username);
             suitDataSource.setPassword(main_password);
         } else {
-            suitDataSource = getFanDataSource(currentAccountSuit);
+            suitDataSource = getSuitDataSource(currentAccountSuit);
         }
         if (suitDataSource == null) {
             throw new InvalidParameterException("账套不存在");
@@ -128,12 +128,8 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
      * @param suitname
      * @return
      */
-    private SuitDataSource getFanDataSource(String suitname) {
+    private SuitDataSource getSuitDataSource(String suitname) {
         return suitAcquireInterface.getSuitDataSource(suitname);
-
-//        String sql = "select name, url, username, password from fan_datasource where name = ?";
-//        RowMapper<SuitDataSource> rowMapper = new BeanPropertyRowMapper<>(SuitDataSource.class);
-//        return jdbcTemplate.queryForObject(sql, rowMapper, name);
     }
 
     /**
