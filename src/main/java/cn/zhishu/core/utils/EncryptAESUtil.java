@@ -235,16 +235,16 @@ public class EncryptAESUtil {
 
     public static String detryptFailReturnSrc(String message) {
         try {
-            detrypt(message);
+            return detrypt(message);
         } catch (Exception e) {
             logger.error("报文解密失败-返回原文-msg={}, error={}", message, e.getMessage(), e);
             return message;
         }
-
-        return "";
     }
 
     public static void main(String[] args) {
+        EncryptAESUtil.init("su","mints@0419");
+
         System.out.println(DigestUtils.md5DigestAsHex("goodmoney_2020".getBytes()).substring(8, 24));
     }
 }
