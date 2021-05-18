@@ -5,7 +5,7 @@
 
     <groupId>com.mints</groupId>
     <artifactId>ms-dynamic</artifactId>
-    <version>0.0.1-RELEASE</version>
+    <version>0.0.2-RELEASE</version>
     <name>ms-dynamic</name>
     <description>Dynamic datasource for Spring Boot</description>
 
