@@ -50,6 +50,18 @@ public class RoutingDataSourceContext  {
     }
 
     /**
+     * 获得当前数据库的key
+     * @return
+     */
+    public static String getDataSourceKey() {
+        String key = threadLocalDataSourceKey.get();
+        if (key == null){
+            return SUID_DS_DEFAULT_KEY;
+        }
+        return key;
+    }
+
+    /**
      * 设置数据库的key
      * @param key
      */
@@ -61,6 +73,8 @@ public class RoutingDataSourceContext  {
     public static void setThreadLocalDataSourceDefaultKey() {
         threadLocalDataSourceKey.set(SUID_DS_DEFAULT_KEY);
     }
+
+
 
     /**
      * 清除数据库的key
